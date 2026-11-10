@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { useDB, useToasts, mutate, toast, setActor, actorFor, captureTx, setOnline, syncNow, replayDuplicate, txStatus, decide, canDecide, mat, avail, empName, siteName, veh, taskOf, resubmit, emp, advanceSummary, getActor } from '../lib/store'
 import { ROLES, RoleKey, SI } from '../lib/roles'
 import { fmtDT, fmtTime, fmtDate, money, num, dayStr, stampedPhoto, fileToThumb } from '../lib/util'
-import { Badge, ReasonModal } from '../components/ui'
+import { Badge, ReasonModal, Logo } from '../components/ui'
 import { summary } from '../pages/Approvals'
 import { TrackMap, trackStatus } from '../pages/Transport'
 
@@ -26,7 +26,7 @@ export default function Mobile() {
   return frame(<App role={role} logout={() => set(null)} />)
 }
 function MLogin({ onPick }: { onPick: (r: RoleKey) => void }) {
-  return <><Toast /><div className="m-top text-center py-4"><div className="logo-ph mx-auto mb-2" style={{ width: 52, height: 52 }}>B</div><div className="fw-bold fs-5">BROWNS Field Ops</div><div style={{ fontSize: '.68rem', opacity: .8 }}>Mobile app prototype · DEMO DATA</div></div>
+  return <><Toast /><div className="m-top text-center py-4"><div className="mb-2"><Logo size={64} /></div><div className="fw-bold fs-5">BROWNS Field Ops</div><div style={{ fontSize: '.68rem', opacity: .8 }}>Mobile app prototype · DEMO DATA</div></div>
     <div className="m-body"><div className="small fw-bold text-navy mb-2">Choose demonstration role</div>{(Object.keys(ROLES) as RoleKey[]).map(r => <button key={r} className="m-card w-100 text-start d-flex gap-3 align-items-center" onClick={() => onPick(r)}><i className={`bi bi-${ROLES[r].icon} fs-3 text-primary`} /><div><div className="fw-semibold">{ROLES[r].label}</div><div className="small text-muted">{ROLES[r].desc}</div></div></button>)}<Link to="/login" className="small d-block text-center mt-2">Back to web console</Link></div></>
 }
 
@@ -35,14 +35,17 @@ function App({ role, logout }: { role: RoleKey; logout: () => void }) {
   const [tab, setTab] = useState('home'); const si = db.device.lang === 'si'; const t = (k: string) => (si ? SI[k] || k : k)
   const pending = db.syncQueue.filter((x: any) => ['Saved on Device', 'Awaiting Upload', 'Uploading', 'Sync Failed'].includes(x.status)).length
   const online = db.device.online
+  const compact = R.mobile.length > 5 // many tabs: Sync & Profile move to the header
+  const navTabs = compact ? R.mobile.filter(k => k !== 'sync' && k !== 'profile') : R.mobile
   const Screen: any = { home: Home, attendance: Attendance, progress: ProgressM, materials: MaterialsM, trips: TripsM, petty: PettyM, approvals: ApprovalsM, sync: SyncM, profile: ProfileM }[tab]
   return <>
     <Toast />
-    <div className="m-top"><div className="d-flex justify-content-between align-items-center"><div><div className="fw-bold">{t(LABEL[tab])}</div><div style={{ fontSize: '.68rem', opacity: .8 }}>{a.name} · {R.short}</div></div>
-      <div className="d-flex gap-1 align-items-center"><button className="sync-pill border-0 text-white" onClick={() => mutate(s => { s.device.lang = si ? 'en' : 'si' })}>{si ? 'EN' : 'සිං'}</button><button className="sync-pill border-0 text-white" onClick={() => setOnline(!online)} title="Toggle demo connectivity"><i className={`bi bi-${online ? 'wifi' : 'wifi-off'}`} /> {t(online ? 'Online' : 'Offline')}</button></div></div>
+    <div className="m-top"><div className="d-flex justify-content-between align-items-center gap-2"><div className="min-w-0"><div className="fw-bold">{t(LABEL[tab])}</div><div className="m-sub">{a.name} · {R.short}</div></div>
+      <div className="d-flex gap-1 align-items-center flex-shrink-0"><button className="sync-pill border-0 text-white" onClick={() => mutate(s => { s.device.lang = si ? 'en' : 'si' })}>{si ? 'EN' : 'සිං'}</button><button className="sync-pill border-0 text-white" onClick={() => setOnline(!online)} title="Toggle demo connectivity"><i className={`bi bi-${online ? 'wifi' : 'wifi-off'}`} /> {t(online ? 'Online' : 'Offline')}</button>
+        {compact && <><button className={`m-hbtn ${tab === 'sync' ? 'on' : ''}`} onClick={() => setTab('sync')} title={t('Sync')} aria-label="Sync"><i className="bi bi-arrow-repeat" />{pending > 0 && <span className="m-dot">{pending}</span>}</button><button className={`m-hbtn ${tab === 'profile' ? 'on' : ''}`} onClick={() => setTab('profile')} title={t('Profile')} aria-label="Profile"><i className="bi bi-person-circle" /></button></>}</div></div>
       <div className="d-flex justify-content-between mt-2 sync-pill" style={{ borderRadius: 8 }} onClick={() => setTab('sync')}><span><i className="bi bi-arrow-repeat" /> {pending ? `${pending} awaiting sync` : 'All synchronized'}</span><span>Last: {fmtTime(db.lastSync)}</span></div></div>
     <div className="m-body"><Screen role={role} t={t} go={setTab} logout={logout} /></div>
-    <div className="m-nav">{R.mobile.map(k => <button key={k} className={tab === k ? 'on' : ''} onClick={() => setTab(k)}><i className={`bi bi-${ICON[k]}${tab === k ? '-fill' : ''}`.replace('geo-alt-fill', 'geo-alt-fill')} />{t(LABEL[k])}{k === 'sync' && pending > 0 && <span className="badge bg-danger" style={{ position: 'absolute', marginLeft: 18, marginTop: -2 }}>{pending}</span>}</button>)}</div></>
+    <nav className="m-nav">{navTabs.map(k => <button key={k} className={tab === k ? 'on' : ''} onClick={() => setTab(k)}><span className="ni"><i className={`bi bi-${ICON[k]}`} />{k === 'sync' && pending > 0 && <span className="m-dot">{pending}</span>}</span><span className="nt">{t(LABEL[k])}</span></button>)}</nav></>
 }
 
 // ---------- helpers ----------

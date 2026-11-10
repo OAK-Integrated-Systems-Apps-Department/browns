@@ -3,7 +3,7 @@ import { HashRouter, Routes, Route, NavLink, Navigate, useNavigate, useLocation,
 import { useDB, useToasts, setActor, actorFor, resetDemo, setOnline, toast, mutate } from './lib/store'
 import { ROLES, NAV, RoleKey } from './lib/roles'
 import { fmtDT } from './lib/util'
-import { Sim } from './components/ui'
+import { Sim, Logo } from './components/ui'
 import Dashboard from './pages/Dashboard'
 import Projects from './pages/Projects'
 import Manpower from './pages/Manpower'
@@ -24,7 +24,6 @@ export const useRole = () => useContext(RoleCtx)
 const SK = 'browns-web-role'
 
 function Toasts() { const t = useToasts(); return <div className="toasts">{t.map((x: any) => <div key={x.id} className={`toast-i t-${x.kind}`}>{x.msg}</div>)}</div> }
-export const Logo = ({ size = 38 }: { size?: number }) => <div className="logo-ph" style={{ width: size, height: size }} title="Placeholder for official Browns logo">B</div>
 
 function Login({ onLogin }: { onLogin: (r: RoleKey) => void }) {
   const [email, setEmail] = useState('demo@browns-demo.lk'); const [pw, setPw] = useState('demo1234')

@@ -1,3 +1,5 @@
+import logoUrl from '../assets/browns-logo.png'
+export const Logo = ({ size = 38 }: { size?: number }) => <img src={logoUrl} alt="Browns Group" className="brand-logo" style={{ width: size, height: size }} />
 import { useMemo, useState, ReactNode } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { ResponsiveContainer, BarChart, Bar, LineChart, Line, AreaChart, Area, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts'

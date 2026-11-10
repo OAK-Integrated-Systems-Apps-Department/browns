@@ -1,0 +1,42 @@
+export type RoleKey = 'admin' | 'pm' | 'supervisor' | 'storekeeper' | 'driver' | 'finance' | 'employee' | 'management'
+export const ROLES: Record<RoleKey, { label: string; short: string; icon: string; desc: string; userId: string; web: string[]; mobile: string[]; canApprove: boolean; readonly?: boolean }> = {
+  admin: { label: 'Administrator', short: 'Admin', icon: 'shield-lock', desc: 'Users, master data, integrations, audit', userId: 'U-01', canApprove: false,
+    web: ['dash', 'projects', 'manpower', 'transport', 'progress', 'materials', 'petty', 'approvals', 'notifications', 'reports', 'integration', 'sync', 'audit', 'users', 'roles', 'master', 'settings'], mobile: ['home', 'sync', 'profile'] },
+  pm: { label: 'Project Manager / Engineer', short: 'Project Manager', icon: 'diagram-3', desc: 'Allocate, assign, review, approve', userId: 'U-02', canApprove: true,
+    web: ['dash', 'projects', 'manpower', 'transport', 'progress', 'materials', 'petty', 'approvals', 'notifications', 'reports'], mobile: ['home', 'progress', 'approvals', 'sync', 'profile'] },
+  supervisor: { label: 'Supervisor / Foreman', short: 'Supervisor', icon: 'person-badge', desc: 'Attendance, progress, site usage', userId: 'U-03', canApprove: true,
+    web: ['dash', 'manpower', 'progress', 'materials', 'petty', 'approvals', 'notifications'], mobile: ['home', 'attendance', 'progress', 'materials', 'petty', 'approvals', 'sync', 'profile'] },
+  storekeeper: { label: 'Storekeeper', short: 'Storekeeper', icon: 'box-seam', desc: 'Receipts, issues, returns, counts', userId: 'U-04', canApprove: false,
+    web: ['dash', 'materials', 'notifications', 'reports'], mobile: ['home', 'materials', 'sync', 'profile'] },
+  driver: { label: 'Driver / Transport Coordinator', short: 'Driver', icon: 'truck', desc: 'Trips, odometer, fuel, tracking', userId: 'U-05', canApprove: false,
+    web: ['dash', 'transport', 'notifications', 'reports'], mobile: ['home', 'trips', 'attendance', 'sync', 'profile'] },
+  finance: { label: 'Finance', short: 'Finance', icon: 'cash-coin', desc: 'Advances, disbursement, settlement', userId: 'U-06', canApprove: true,
+    web: ['dash', 'petty', 'approvals', 'notifications', 'reports', 'integration'], mobile: ['home', 'approvals', 'sync', 'profile'] },
+  employee: { label: 'Employee / Labourer', short: 'Employee', icon: 'person', desc: 'Check in/out, petty cash, history', userId: 'U-07', canApprove: false,
+    web: ['dash', 'manpower', 'petty', 'notifications'], mobile: ['home', 'attendance', 'petty', 'sync', 'profile'] },
+  management: { label: 'Senior Management', short: 'Management', icon: 'graph-up-arrow', desc: 'Consolidated view-only dashboards', userId: 'U-08', canApprove: false, readonly: true,
+    web: ['dash', 'projects', 'manpower', 'transport', 'progress', 'materials', 'petty', 'approvals', 'notifications', 'reports'], mobile: ['home', 'approvals', 'profile'] },
+}
+export const NAV: Record<string, { label: string; si: string; icon: string; path: string; group: string }> = {
+  dash: { label: 'Executive Dashboard', si: 'ප්‍රධාන උපකරණ පුවරුව', icon: 'speedometer2', path: '/app', group: 'MAIN MENU' },
+  projects: { label: 'Projects & Sites', si: 'ව්‍යාපෘති සහ ස්ථාන', icon: 'building', path: '/app/projects', group: 'MAIN MENU' },
+  manpower: { label: 'Manpower & Attendance', si: 'ශ්‍රම බලය සහ පැමිණීම', icon: 'people', path: '/app/manpower', group: 'MAIN MENU' },
+  transport: { label: 'Transport & Vehicles', si: 'ප්‍රවාහනය', icon: 'truck-front', path: '/app/transport', group: 'MAIN MENU' },
+  progress: { label: 'Daily Project Progress', si: 'දෛනික ප්‍රගතිය', icon: 'bar-chart-steps', path: '/app/progress', group: 'MAIN MENU' },
+  materials: { label: 'Materials & Stock', si: 'ද්‍රව්‍ය සහ තොග', icon: 'boxes', path: '/app/materials', group: 'MAIN MENU' },
+  petty: { label: 'Petty Cash & Settlements', si: 'සුළු මුදල්', icon: 'wallet2', path: '/app/petty', group: 'MAIN MENU' },
+  approvals: { label: 'Approval Centre', si: 'අනුමත කිරීම්', icon: 'check2-square', path: '/app/approvals', group: 'OPERATIONS' },
+  notifications: { label: 'Notifications', si: 'දැනුම්දීම්', icon: 'bell', path: '/app/notifications', group: 'OPERATIONS' },
+  reports: { label: 'Reports & Analytics', si: 'වාර්තා', icon: 'file-earmark-bar-graph', path: '/app/reports', group: 'OPERATIONS' },
+  integration: { label: 'SAP / HRIS Integration', si: 'SAP / HRIS', icon: 'plug', path: '/app/integration', group: 'SYSTEM' },
+  sync: { label: 'Synchronization Monitor', si: 'සමමුහුර්ත', icon: 'arrow-repeat', path: '/app/sync', group: 'SYSTEM' },
+  audit: { label: 'Audit Logs', si: 'විගණන ලොග', icon: 'journal-text', path: '/app/audit', group: 'SYSTEM' },
+  users: { label: 'User Management', si: 'පරිශීලකයින්', icon: 'person-gear', path: '/app/users', group: 'SYSTEM' },
+  roles: { label: 'Role & Permission Management', si: 'භූමිකා', icon: 'key', path: '/app/roles', group: 'SYSTEM' },
+  master: { label: 'Master Data', si: 'ප්‍රධාන දත්ත', icon: 'database', path: '/app/master', group: 'SYSTEM' },
+  settings: { label: 'System Settings', si: 'පද්ධති සැකසුම්', icon: 'gear', path: '/app/settings', group: 'SYSTEM' },
+}
+export const SI: Record<string, string> = {
+  Home: 'මුල් පිටුව', Attendance: 'පැමිණීම', Progress: 'ප්‍රගතිය', Materials: 'ද්‍රව්‍ය', Trips: 'ගමන්', 'Petty Cash': 'සුළු මුදල්', Approvals: 'අනුමත', Sync: 'සමමුහුර්ත', Profile: 'පැතිකඩ',
+  'Check In': 'පැමිණීම සටහන', 'Check Out': 'ඉවත්වීම සටහන', Submit: 'ඉදිරිපත් කරන්න', 'Capture Location': 'ස්ථානය ලබාගන්න', 'Take Photo': 'ඡායාරූපය ගන්න', Online: 'සබැඳි', Offline: 'නොබැඳි',
+}
